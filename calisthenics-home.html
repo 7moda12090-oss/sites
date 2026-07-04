@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CALIS — Master Your Body</title>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+</head>
+<style>   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #0a0a0a;
+      --chalk:   #f0ece3;
+      --iron:    #1c1c1c;
+      --rust:    #c8412a;
+      --rust-glow: rgba(200, 65, 42, 0.35);
+      --muted:   #6b6b6b;
+      --bar:     #2e2e2e;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--chalk);
+      font-family: 'Barlow', sans-serif;
+      overflow-x: hidden;
+      cursor: crosshair;
+    }
+
+    /* ─── NOISE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.5;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 3rem;
+      z-index: 100;
+      mix-blend-mode: normal;
+    }
+    nav::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.9), transparent);
+      z-index: -1;
+    }
+    .nav-logo {
+      font-family: 'Black Ops One', cursive;
+      font-size: 1.5rem;
+      letter-spacing: 0.15em;
+      color: var(--chalk);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--rust); }
+    .nav-links {
+      display: flex; gap: 2.5rem; list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--chalk);
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--rust); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Left: text panel */
+    .hero-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10rem 4rem 4rem 5rem;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 1.4rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s ease forwards;
+    }
+    .hero-title {
+      font-family: 'Black Ops One', cursive;
+      font-size: clamp(4rem, 7vw, 7.5rem);
+      line-height: 0.92;
+      letter-spacing: -0.01em;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s ease forwards;
+    }
+    .hero-title em {
+      font-style: normal;
+      color: transparent;
+      -webkit-text-stroke: 2px var(--chalk);
+    }
+    .hero-desc {
+      font-size: 1rem;
+      line-height: 1.75;
+      max-width: 38ch;
+      color: rgba(240,236,227,0.65);
+      margin-bottom: 3rem;
+      font-weight: 300;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s ease forwards;
+    }
+    .hero-ctas {
+      display: flex; gap: 1rem; align-items: center;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s ease forwards;
+    }
+    .btn-primary {
+      background: var(--rust);
+      color: var(--chalk);
+      border: none;
+      padding: 1rem 2.2rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 100%, 10px 100%);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px var(--rust-glow);
+    }
+    .btn-ghost {
+      color: var(--chalk);
+      text-decoration: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      display: flex; align-items: center; gap: 0.6rem;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .btn-ghost::before {
+      content: '';
+      display: block;
+      width: 28px; height: 1px;
+      background: var(--chalk);
+      transition: width 0.3s;
+    }
+    .btn-ghost:hover { opacity: 1; }
+    .btn-ghost:hover::before { width: 44px; }
+
+    /* Right: visual panel */
+    .hero-visual {
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-visual-bg {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(135deg, transparent 60%, var(--rust-glow) 100%),
+        linear-gradient(to right, var(--black) 0%, transparent 30%);
+      z-index: 2;
+    }
+    .hero-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.6;
+      filter: grayscale(40%) contrast(1.1);
+    }
+
+    /* Fallback visual (SVG silhouette) */
+    .hero-svg-wrap {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1;
+    }
+    .hero-svg-wrap svg {
+      height: 80%; width: auto;
+      opacity: 0.15;
+    }
+
+    /* Big number */
+    .hero-number {
+      position: absolute;
+      bottom: 3rem; right: 3rem;
+      font-family: 'Black Ops One', cursive;
+      font-size: 10rem;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(240,236,227,0.08);
+      line-height: 1;
+      z-index: 3;
+      user-select: none;
+    }
+
+    /* Vertical text */
+    .hero-vertical {
+      position: absolute;
+      right: 2.5rem; top: 50%;
+      transform: translateY(-50%) rotate(90deg);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(240,236,227,0.3);
+      z-index: 10;
+      white-space: nowrap;
+    }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem; left: 5rem;
+      display: flex; align-items: center; gap: 0.8rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(240,236,227,0.35);
+      z-index: 10;
+    }
+    .scroll-line {
+      width: 40px; height: 1px;
+      background: rgba(240,236,227,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-line::after {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: var(--rust);
+      animation: scrollSlide 2s 1.5s ease infinite;
+    }
+
+    /* ─── STATS BAND ─── */
+    .stats-band {
+      background: var(--iron);
+      border-top: 1px solid rgba(240,236,227,0.06);
+      border-bottom: 1px solid rgba(240,236,227,0.06);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      text-align: center;
+    }
+    .stat-item {
+      padding: 3rem 2rem;
+      border-right: 1px solid rgba(240,236,227,0.06);
+      transition: background 0.3s;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-item:hover { background: rgba(200,65,42,0.05); }
+    .stat-number {
+      font-family: 'Black Ops One', cursive;
+      font-size: 3rem;
+      color: var(--rust);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .stat-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(240,236,227,0.4);
+    }
+
+    /* ─── SECTION SHARED ─── */
+    section { padding: 8rem 5rem; }
+    .section-tag {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 1.2rem;
+    }
+    .section-title {
+      font-family: 'Black Ops One', cursive;
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ─── PILLARS ─── */
+    .pillars { background: var(--black); }
+    .pillars-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 5rem;
+    }
+    .pillars-header p {
+      max-width: 36ch;
+      color: rgba(240,236,227,0.55);
+      font-size: 0.95rem;
+      line-height: 1.75;
+      font-weight: 300;
+    }
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .pillar-card {
+      background: var(--iron);
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+    .pillar-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--rust);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.4s ease;
+    }
+    .pillar-card:hover { transform: translateY(-4px); }
+    .pillar-card:hover::before { transform: scaleY(1); }
+    .pillar-number {
+      font-family: 'Black Ops One', cursive;
+      font-size: 4rem;
+      color: rgba(240,236,227,0.05);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+    .pillar-icon {
+      width: 48px; height: 48px;
+      margin-bottom: 1.5rem;
+      color: var(--rust);
+    }
+    .pillar-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .pillar-desc {
+      font-size: 0.88rem;
+      line-height: 1.75;
+      color: rgba(240,236,227,0.5);
+      font-weight: 300;
+    }
+    /* Big visual placeholder */
+    .move-visual {
+      position: relative;
+      aspect-ratio: 3/4;
+      background: var(--bar);
+      overflow: hidden;
+    }
+    .move-visual-inner {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .move-visual svg {
+      width: 60%; opacity: 0.12;
+    }
+    .move-visual-tag {
+      position: absolute;
+      bottom: 2rem; left: 2rem;
+      font-family: 'Black Ops One', cursive;
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      color: rgba(240,236,227,0.3);
+    }
+    .move-bar-line {
+      position: absolute;
+      top: 0; right: 3rem;
+      width: 1px; height: 100%;
+      background: linear-gradient(to bottom, transparent, var(--rust) 40%, var(--rust) 60%, transparent);
+      opacity: 0.15;
+    }
+  .wrap { background: var(--c-black); border-radius: 16px; padding: 2rem 0 1.5rem; overflow: hidden; }
+  .track-outer { display: flex; align-items: center; justify-content: center; position: relative; height: 370px; }
+  .card {
+    position: absolute; width: 250px; min-height: 310px;
+    background: var(--c-card-bg); border: 1px solid var(--c-card-border);
+    border-radius: 14px; padding: 1.5rem 1.25rem 1.25rem;
+    display: flex; flex-direction: column; gap: 10px;
+    box-sizing: border-box; transition: all 0.45s cubic-bezier(0.4,0,0.2,1);
+  }
+  .card.center { transform: translateX(0) scale(1); opacity: 1; filter: none; z-index: 3; border-color: var(--c-orange); }
+  .card.left  { transform: translateX(-222px) scale(0.87); opacity: 0.35; filter: blur(2px); z-index: 1; pointer-events: none; }
+  .card.right { transform: translateX(222px) scale(0.87); opacity: 0.35; filter: blur(2px); z-index: 1; pointer-events: none; }
+  .stick-area { height: 110px; display: flex; align-items: flex-end; justify-content: center; }
+  .card-label { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-orange); }
+  .card-title { font-size: 17px; font-weight: 500; color: #f5f5f5; line-height: 1.2; margin: 0; }
+  .card-body  { font-size: 12.5px; color: var(--c-muted); line-height: 1.6; margin: 0; flex: 1; }
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; width: fit-content; background: #1f1005; color: var(--c-orange); border: 1px solid var(--c-orange-dim); }
+  .arrows { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 1.25rem; }
+  .arrow-btn { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--c-orange-dim); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--c-orange); transition: background 0.18s, transform 0.12s; }
+  .arrow-btn:hover { background: #1f1005; }
+  .arrow-btn:active { transform: scale(0.93); }
+  .dots { display: flex; gap: 7px; align-items: center; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: #444; transition: background 0.2s, width 0.2s; }
+  .dot.active { background: var(--c-orange); width: 16px; border-radius: 3px; }
+    /* ─── QUOTE SECTION ─── */
+    .quote-section {
+      background: var(--rust);
+      padding: 6rem 5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .quote-section::before {
+      content: '"';
+      position: absolute;
+      top: -2rem; left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Black Ops One', cursive;
+      font-size: 20rem;
+      color: rgba(0,0,0,0.1);
+      line-height: 1;
+      user-select: none;
+    }
+    .quote-text {
+      font-family: 'Black Ops One', cursive;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      line-height: 1.25;
+      max-width: 800px;
+      margin: 0 auto 2rem;
+      position: relative;
+      z-index: 1;
+      color: var(--black);
+    }
+    /* ─── PROGRAM SECTION ─── */
+    .programs { background: var(--black); }
+    .programs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+    .program-card {
+      border: 1px solid rgba(240,236,227,0.08);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, background 0.3s;
+      cursor: pointer;
+    }
+    .program-card:hover {
+      border-color: var(--rust);
+      background: rgba(200,65,42,0.04);
+    }
+    .program-card.featured {
+      border-color: var(--rust);
+      background: rgba(200,65,42,0.07);
+    }
+    .featured-badge {
+      position: absolute; top: 0; right: 0;
+      background: var(--rust);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--black);
+      padding: 0.3rem 0.8rem;
+      font-weight: 700;
+    }
+    .program-level {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 1rem;
+    }
+    .program-name {
+      font-family: 'Black Ops One', cursive;
+      font-size: 1.6rem;
+      margin-bottom: 0.8rem;
+    }
+    .program-desc {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: rgba(240,236,227,0.5);
+      font-weight: 300;
+      margin-bottom: 2rem;
+    }
+    .program-meta {
+      display: flex; gap: 1.5rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(240,236,227,0.3);
+    }
+    /*─── transinslih───*/
+    .card-title-1 {
+      color: #c8412a;
+    }
+    .card-title-1:hover {
+     
+
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--iron);
+      border-top: 1px solid rgba(240,236,227,0.06);
+      padding: 4rem 5rem 3rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 4rem;
+    }
+    .footer-brand .nav-logo { font-size: 1.8rem; display: block; margin-bottom: 1rem; }
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: rgba(240,236,227,0.4);
+      line-height: 1.7;
+      max-width: 28ch;
+      font-weight: 300;
+    }
+    .footer-col h4 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 1.4rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li {
+      margin-bottom: 0.75rem;
+      font-size: 0.85rem;
+      color: rgba(240,236,227,0.45);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .footer-col ul li:hover { color: var(--chalk); }
+    .footer-bottom {
+      grid-column: 1 / -1;
+      border-top: 1px solid rgba(240,236,227,0.06);
+      padding-top: 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.75rem;
+      color: rgba(240,236,227,0.2);
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scrollSlide {
+      0%   { left: -100%; }
+      50%  { left: 100%; }
+      100% { left: 100%; }
+    }
+
+    /* ─── RESPONSIVE (basic) ─── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .stats-band { grid-template-columns: repeat(2, 1fr); }
+      .pillars-grid, .programs-grid { grid-template-columns: 1fr; }
+      .movements-inner { grid-template-columns: 1fr; }
+      .move-visual { display: none; }
+      footer { grid-template-columns: 1fr 1fr; }
+      section { padding: 5rem 2rem; }
+      .pillars-header { flex-direction: column; gap: 1.5rem; }
+    }</style>
+<body>
+  
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">CALIS<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#pillars">Method</a></li>
+      <li><a href="#movements">Movements</a></li>
+      <li><a href="#programs">Programs</a></li>
+      <li><a href="#">Community</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" style="padding:0;">
+    <div class="hero-text">
+      <p class="hero-eyebrow">No Gym Required</p>
+      <h1 class="hero-title">
+        YOUR BODY<br>IS THE<br><em>WEIGHT</em>
+      </h1>
+      <p class="hero-desc">
+        Calisthenics is the oldest and purest form of strength. Master gravity. 
+        Build real power through bodyweight mastery — from first push-up to human flag.
+      </p>
+      <div class="hero-ctas">
+        <a href="#programs" class="btn-primary">Start Training</a>
+        <a href="#movements" class="btn-ghost">Explore Movements</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-visual-bg"></div>
+      <div class="hero-svg-wrap">
+        <!-- Stylized human silhouette -->
+        <svg viewBox="0 0 200 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="40" r="30" fill="#f0ece3"/>
+          <line x1="100" y1="70" x2="100" y2="220" stroke="#f0ece3" stroke-width="14" stroke-linecap="round"/>
+          <line x1="100" y1="110" x2="30" y2="170" stroke="#f0ece3" stroke-width="10" stroke-linecap="round"/>
+          <line x1="100" y1="110" x2="170" y2="170" stroke="#f0ece3" stroke-width="10" stroke-linecap="round"/>
+          <line x1="100" y1="220" x2="55" y2="360" stroke="#f0ece3" stroke-width="12" stroke-linecap="round"/>
+          <line x1="100" y1="220" x2="145" y2="360" stroke="#f0ece3" stroke-width="12" stroke-linecap="round"/>
+          <line x1="55" y1="360" x2="40" y2="470" stroke="#f0ece3" stroke-width="10" stroke-linecap="round"/>
+          <line x1="145" y1="360" x2="160" y2="470" stroke="#f0ece3" stroke-width="10" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="hero-number">01</div>
+    <div class="hero-vertical">Bodyweight · Strength · Control</div>
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      Scroll
+    </div>
+  </section>
+
+  <!-- STATS BAND -->
+  <div class="stats-band">
+    <div class="stat-item">
+      <div class="stat-number">0</div>
+      <div class="stat-label">Equipment Needed</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">47+</div>
+      <div class="stat-label">Core Movements</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">∞</div>
+      <div class="stat-label">Progress Levels</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">12K</div>
+      <div class="stat-label">Athletes Training</div>
+    </div>
+  </div>
+
+  <!-- PILLARS -->
+  <section class="pillars" id="pillars">
+    <div class="pillars-header">
+      <div>
+        <p class="section-tag">The Method</p>
+        <h2 class="section-title">Three Pillars<br>of Mastery</h2>
+      </div>
+      <p>Calisthenics isn't random exercise. It's a structured discipline built on three inseparable pillars — neglect any one and your progress stalls.</p>
+    </div>
+    <div class="pillars-grid">
+      <div class="pillar-card">
+        <div class="pillar-number">01</div>
+        <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="24" cy="10" r="5"/>
+          <line x1="24" y1="15" x2="24" y2="30"/>
+          <line x1="24" y1="22" x2="12" y2="28"/>
+          <line x1="24" y1="22" x2="36" y2="28"/>
+          <line x1="24" y1="30" x2="16" y2="42"/>
+          <line x1="24" y1="30" x2="32" y2="42"/>
+        </svg>
+        <div class="pillar-name">Tension & Control</div>
+        <p class="pillar-desc">True strength starts with full-body tension. Every rep demands complete muscular engagement — not momentum, not shortcuts. Learn to own each position before advancing.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-number">02</div>
+        <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M8 40 C8 20 40 28 40 8"/>
+          <circle cx="40" cy="8" r="3" fill="currentColor"/>
+          <path d="M8 40 L16 32 M16 32 L24 36 M24 36 L32 24 M32 24 L40 8"/>
+        </svg>
+        <div class="pillar-name">Progressive Overload</div>
+        <p class="pillar-desc">Every movement has a ladder. From tuck planche to full planche. From negative pull-ups to muscle-ups. Structured progressions ensure continuous adaptation without injury.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-number">03</div>
+        <svg class="pillar-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="24" cy="24" r="16"/>
+          <path d="M24 12 L24 24 L32 28"/>
+        </svg>
+        <div class="pillar-name">Consistency & Patience</div>
+        <p class="pillar-desc">Skills like the handstand or back lever take months, sometimes years. Calisthenics teaches you that the journey is the training. Show up. Every. Single. Day.</p>
+      </div>
+    </div>
+  </section>
+<div class="wrap">
+  <div class="track-outer">
+
+    <div class="card" id="card-0">
+      <div class="stick-area">
+        <svg width="100" height="108" viewBox="0 0 100 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="20" y1="104" x2="80" y2="104" stroke="#e8600a" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="35" cy="102" r="3" fill="#f5f5f5"/>
+          <circle cx="65" cy="102" r="3" fill="#f5f5f5"/>
+          <line x1="35" y1="102" x2="40" y2="82" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="65" y1="102" x2="60" y2="82" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="40" y1="82" x2="60" y2="82" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="50" y1="82" x2="50" y2="84" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="50" cy="90" r="8" stroke="#f5f5f5" stroke-width="2.5"/>
+          <line x1="50" y1="82" x2="50" y2="52" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="42" y1="52" x2="58" y2="52" stroke="#f5f5f5" stroke-width="2" stroke-linecap="round"/>
+          <line x1="44" y1="52" x2="40" y2="18" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="56" y1="52" x2="60" y2="18" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="40" y1="18" x2="36" y2="10" stroke="#f5f5f5" stroke-width="2" stroke-linecap="round"/>
+          <line x1="60" y1="18" x2="64" y2="10" stroke="#f5f5f5" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="card-label">Fundamentals</div>
+      <p class="card-title"><span class="card-title-1"><a href="parts/skills.html">Calisthenics skills</a></span></p>
+      <p class="card-body">Master pull-ups, dips, push-ups, and muscle-ups. Build strength and body control using only your own weight.</p>
+      <span class="tag">Skill-based</span>
+    </div>
+
+    <div class="card" id="card-1">
+      <div class="stick-area">
+        <svg width="100" height="105" viewBox="0 0 100 105" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="14" r="9" stroke="#f5f5f5" stroke-width="2.5"/>
+          <line x1="50" y1="23" x2="50" y2="55" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="50" y1="35" x2="28" y2="50" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="50" y1="35" x2="72" y2="50" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="50" y1="55" x2="32" y2="80" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="50" y1="55" x2="68" y2="80" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="32" y1="80" x2="24" y2="100" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="68" y1="80" x2="76" y2="100" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M60 65 Q72 60 74 72" stroke="#e8600a" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M40 65 Q28 60 26 72" stroke="#e8600a" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="card-label">Conditioning</div>
+      <p class="card-title"><span class="card-title-2" ><a href="parts/endurance.html">Endurance training</a></span></p>
+      <p class="card-body">High-rep circuits and minimal rest. Train cardiovascular stamina alongside your muscles for lasting output.</p>
+      <span class="tag">Cardio & volume</span>
+    </div>
+
+    <div class="card" id="card-2">
+      <div class="stick-area">
+        <svg width="110" height="105" viewBox="0 0 110 105" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="46" width="16" height="7" rx="3" fill="#e8600a"/>
+          <rect x="92" y="46" width="16" height="7" rx="3" fill="#e8600a"/>
+          <line x1="18" y1="49" x2="92" y2="49" stroke="#888" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="55" cy="26" r="9" stroke="#f5f5f5" stroke-width="2.5"/>
+          <line x1="55" y1="35" x2="55" y2="62" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="55" y1="42" x2="28" y2="49" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="55" y1="42" x2="82" y2="49" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="55" y1="62" x2="42" y2="88" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="55" y1="62" x2="68" y2="88" stroke="#f5f5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="42" y1="88" x2="38" y2="102" stroke="#f5f5f5" stroke-width="2" stroke-linecap="round"/>
+          <line x1="68" y1="88" x2="72" y2="102" stroke="#f5f5f5" stroke-width="2" stroke-linecap="round"/>
+          <rect x="42" y="62" width="26" height="10" rx="3" fill="#c8c8c8" stroke="#999" stroke-width="1"/>
+          <rect x="51" y="64" width="8" height="6" rx="1.5" fill="#666"/>
+          <rect x="53" y="65.5" width="4" height="3" rx="1" fill="#c8c8c8"/>
+        </svg>
+      </div>
+      <div class="card-label">Progressive overload</div>
+      <p class="card-title"><span class="card-title-3"><a href="parts/weighted.html">Weighted calisthenics</a></span></p>
+      <p class="card-body">Add plates or vests to classic movements. Combine bodyweight freedom with resistance for maximum muscle growth.</p>
+      <span class="tag">Strength & mass</span>
+    </div>
+
+  </div>
+
+  <div class="arrows">
+    <button class="arrow-btn" id="prev" aria-label="Previous">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="dots">
+      <div class="dot active" id="dot-0"></div>
+      <div class="dot" id="dot-1"></div>
+      <div class="dot" id="dot-2"></div>
+    </div>
+    <button class="arrow-btn" id="next" aria-label="Next">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  const cards = [document.getElementById('card-0'), document.getElementById('card-1'), document.getElementById('card-2')];
+  const dots  = [document.getElementById('dot-0'), document.getElementById('dot-1'), document.getElementById('dot-2')];
+  let cur = 0;
+  function pos(i) { const d = (i - cur + 3) % 3; return d === 0 ? 'center' : d === 1 ? 'right' : 'left'; }
+  function render() {
+    cards.forEach((c, i) => c.className = 'card ' + pos(i));
+    dots.forEach((d, i)  => d.className = 'dot'  + (i === cur ? ' active' : ''));
+  }
+  document.getElementById('next').addEventListener('click', () => { cur = (cur + 1) % 3; render(); });
+  document.getElementById('prev').addEventListener('click', () => { cur = (cur + 2) % 3; render(); });
+  render();
+</script>
+  <!-- QUOTE -->
+  <div class="quote-section">
+    <blockquote class="quote-text">
+      "NO PAIN NO GAIN"
+    </blockquote>
+  </div>
+
+  <!-- PROGRAMS -->
+  <section class="programs" id="programs">
+    <p class="section-tag">Training Programs</p>
+    <h2 class="section-title">Find Your<br>Starting Point</h2>
+    <div class="programs-grid">
+      <div class="program-card">
+        <div class="program-level">Level 01</div>
+        <div class="program-name">Foundation</div>
+        <p class="program-desc">Build the base. Master push-ups, squats, and hanging. Develop body awareness and joint integrity from day one.</p>
+        <div class="program-meta">
+          <span>8 Weeks</span>
+          <span>3×/Week</span>
+          <span>No Equipment</span>
+        </div>
+      </div>
+      <div class="program-card featured">
+        <div class="featured-badge">Most Popular</div>
+        <div class="program-level">Level 02</div>
+        <div class="program-name">Strength Builder</div>
+        <p class="program-desc">Pull-ups, dips, pistol squats, pike push-ups. Start working toward your first muscle-up and handstand wall walks.</p>
+        <div class="program-meta">
+          <span>12 Weeks</span>
+          <span>4×/Week</span>
+          <span>Bar & Rings</span>
+        </div>
+      </div>
+      <div class="program-card">
+        <div class="program-level">Level 03</div>
+        <div class="program-name">Skills Lab</div>
+        <p class="program-desc">Dedicated skill work for handstands, front lever, planche progressions, and muscle-up variations. Pure calisthenics mastery.</p>
+        <div class="program-meta">
+          <span>16 Weeks</span>
+          <span>5×/Week</span>
+          <span>Full Setup</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <a class="nav-logo" href="#">CALIS<span>.</span></a>
+      <p>Atchive Your Dream and Challenge  Gravity</p>
+    </div>
+    <div class="footer-col">
+      <h4>Train</h4>
+      <ul>
+        <li>Programs</li>
+        <li>Movement Library</li>
+        <li>Skill Progressions</li>
+        <li>Workout Builder</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Learn</h4>
+      <ul>
+        <li>Beginner Guide</li>
+        <li>Nutrition Basics</li>
+        <li>Recovery & Mobility</li>
+        <li>Blog</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Community</h4>
+      <ul>
+        <li>Forum</li>
+        <li>Athletes</li>
+        <li>Challenges</li>
+        <li>Events</li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CALIS. All rights reserved.</span>
+      <span>Bodyweight · Strength · Control</span>
+    </div>
+  </footer>
+
+</body>
+</html>

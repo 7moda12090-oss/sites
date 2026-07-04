@@ -1,0 +1,362 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111; color: #f0f0f0; font-family: var(--font-sans, sans-serif); }
+
+  .page { background: #111; min-height: 100vh; padding: 0 0 60px 0; }
+
+  .hero { background: #111; border-bottom: 2px solid #e05a00; padding: 48px 40px 36px; text-align: center; }
+  .hero h1 { font-size: 38px; font-weight: 500; color: #e05a00; letter-spacing: -0.5px; margin-bottom: 10px; }
+  .hero p { font-size: 16px; color: #bbb; max-width: 600px; margin: 0 auto; line-height: 1.7; }
+
+  .section { padding: 40px 32px 20px; max-width: 760px; margin: 0 auto; }
+  .section-title { font-size: 22px; font-weight: 500; color: #e05a00; border-left: 4px solid #e05a00; padding-left: 14px; margin-bottom: 24px; }
+
+  .what-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 32px; }
+  .what-card { background: #1a1a1a; border: 0.5px solid #333; border-radius: 10px; padding: 20px 16px; }
+  .what-card .label { font-size: 13px; color: #e05a00; font-weight: 500; margin-bottom: 6px; }
+  .what-card .desc { font-size: 14px; color: #ccc; line-height: 1.6; }
+
+  .stickfig-row { display: flex; justify-content: space-around; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin: 24px 0 32px; }
+  .stickfig-box { text-align: center; }
+  .stickfig-box span { display: block; font-size: 12px; color: #e05a00; margin-top: 8px; font-weight: 500; }
+
+  .chart-wrap { background: #1a1a1a; border: 0.5px solid #333; border-radius: 12px; padding: 24px 20px 16px; margin-bottom: 28px; }
+  .chart-title { font-size: 14px; font-weight: 500; color: #fff; margin-bottom: 4px; }
+  .chart-sub { font-size: 12px; color: #888; margin-bottom: 16px; }
+  .legend { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 14px; }
+  .legend span { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #bbb; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+  .tips { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .tip { background: #1a1a1a; border: 0.5px solid #2a2a2a; border-top: 2px solid #e05a00; border-radius: 8px; padding: 16px 14px; }
+  .tip .t-head { font-size: 13px; color: #e05a00; font-weight: 500; margin-bottom: 6px; }
+  .tip .t-body { font-size: 13px; color: #bbb; line-height: 1.6; }
+
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare-table th { background: #1e1e1e; color: #e05a00; padding: 10px 12px; text-align: left; border-bottom: 1px solid #333; font-weight: 500; }
+  .compare-table td { padding: 10px 12px; border-bottom: 0.5px solid #222; color: #ccc; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table .hi { color: #e05a00; font-weight: 500; }
+</style>
+
+<div class="page">
+
+  <div class="hero">
+    <h1>Weighted Calisthenics</h1>
+    <p>The hybrid discipline — raw bodyweight control meets progressive overload. Build real muscle mass while keeping every ounce of athletic skill.</p>
+  </div>
+
+  <!-- STICKMEN EXERCISES -->
+  <div class="section">
+    <div class="section-title">Common weighted exercises</div>
+    <div class="stickfig-row">
+
+      <!-- Weighted pull-up -->
+      <div class="stickfig-box">
+        <svg width="90" height="130" viewBox="0 0 90 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- bar -->
+          <rect x="0" y="8" width="90" height="5" rx="2" fill="#e05a00"/>
+          <!-- hands -->
+          <circle cx="22" cy="13" r="4" fill="#fff"/>
+          <circle cx="68" cy="13" r="4" fill="#fff"/>
+          <!-- arms -->
+          <line x1="22" y1="13" x2="35" y2="32" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="68" y1="13" x2="55" y2="32" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- head -->
+          <circle cx="45" cy="40" r="9" fill="none" stroke="#fff" stroke-width="2.5"/>
+          <!-- torso -->
+          <line x1="45" y1="49" x2="45" y2="85" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- legs bent up (chin-up position) -->
+          <line x1="45" y1="85" x2="32" y2="105" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="32" y1="105" x2="32" y2="90" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="45" y1="85" x2="58" y2="105" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="58" y1="105" x2="58" y2="90" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- weight plate -->
+          <rect x="34" y="108" width="22" height="12" rx="3" fill="#e05a00"/>
+          <text x="45" y="118" text-anchor="middle" fill="#111" font-size="9" font-weight="500">20kg</text>
+        </svg>
+        <span>Weighted pull-up</span>
+      </div>
+
+      <!-- Weighted dip -->
+      <div class="stickfig-box">
+        <svg width="90" height="130" viewBox="0 0 90 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- dip bars -->
+          <rect x="2" y="28" width="8" height="55" rx="3" fill="#e05a00"/>
+          <rect x="80" y="28" width="8" height="55" rx="3" fill="#e05a00"/>
+          <rect x="2" y="28" width="86" height="7" rx="3" fill="#e05a00"/>
+          <!-- head -->
+          <circle cx="45" cy="12" r="9" fill="none" stroke="#fff" stroke-width="2.5"/>
+          <!-- torso -->
+          <line x1="45" y1="21" x2="45" y2="58" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- arms on bars -->
+          <line x1="45" y1="38" x2="12" y2="35" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="45" y1="38" x2="78" y2="35" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- hands -->
+          <circle cx="12" cy="35" r="4" fill="#fff"/>
+          <circle cx="78" cy="35" r="4" fill="#fff"/>
+          <!-- legs straight down -->
+          <line x1="45" y1="58" x2="38" y2="90" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="45" y1="58" x2="52" y2="90" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- weight -->
+          <rect x="34" y="92" width="22" height="12" rx="3" fill="#e05a00"/>
+          <text x="45" y="102" text-anchor="middle" fill="#111" font-size="9" font-weight="500">15kg</text>
+        </svg>
+        <span>Weighted dip</span>
+      </div>
+
+      <!-- Weighted push-up -->
+      <div class="stickfig-box">
+        <svg width="110" height="130" viewBox="0 0 110 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- floor -->
+          <line x1="0" y1="110" x2="110" y2="110" stroke="#333" stroke-width="1.5"/>
+          <!-- head -->
+          <circle cx="88" cy="68" r="9" fill="none" stroke="#fff" stroke-width="2.5"/>
+          <!-- torso -->
+          <line x1="80" y1="74" x2="42" y2="84" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- arms -->
+          <line x1="72" y1="78" x2="72" y2="110" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="54" y1="82" x2="54" y2="110" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- hands -->
+          <circle cx="72" cy="110" r="4" fill="#fff"/>
+          <circle cx="54" cy="110" r="4" fill="#fff"/>
+          <!-- legs -->
+          <line x1="42" y1="84" x2="18" y2="96" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="18" y1="96" x2="10" y2="110" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="10" cy="110" r="4" fill="#fff"/>
+          <!-- plate on back -->
+          <rect x="48" y="72" width="24" height="11" rx="3" fill="#e05a00"/>
+          <text x="60" y="81" text-anchor="middle" fill="#111" font-size="9" font-weight="500">10kg</text>
+        </svg>
+        <span>Weighted push-up</span>
+      </div>
+
+      <!-- Weighted squat -->
+      <div class="stickfig-box">
+        <svg width="90" height="130" viewBox="0 0 90 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- floor -->
+          <line x1="0" y1="125" x2="90" y2="125" stroke="#333" stroke-width="1.5"/>
+          <!-- head -->
+          <circle cx="45" cy="20" r="9" fill="none" stroke="#fff" stroke-width="2.5"/>
+          <!-- plate behind head (barbell-like vest) -->
+          <rect x="28" y="32" width="34" height="12" rx="3" fill="#e05a00"/>
+          <text x="45" y="42" text-anchor="middle" fill="#111" font-size="9" font-weight="500">25kg</text>
+          <!-- torso (leaning slightly) -->
+          <line x1="45" y1="44" x2="42" y2="78" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- arms out to sides -->
+          <line x1="44" y1="55" x2="20" y2="60" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="44" y1="55" x2="68" y2="60" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- thighs (squatted) -->
+          <line x1="42" y1="78" x2="22" y2="98" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="42" y1="78" x2="60" y2="98" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- shins -->
+          <line x1="22" y1="98" x2="18" y2="125" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="60" y1="98" x2="64" y2="125" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- feet -->
+          <circle cx="18" cy="125" r="4" fill="#fff"/>
+          <circle cx="64" cy="125" r="4" fill="#fff"/>
+        </svg>
+        <span>Weighted squat</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MASS GAIN CHART -->
+  <div class="section">
+    <div class="section-title">Muscle mass gain over 1–2 years</div>
+    <div class="chart-wrap">
+      <div class="chart-title">Estimated lean muscle gain (kg) by training style</div>
+      <div class="chart-sub">Assuming consistent training + adequate protein, intermediate-level athlete</div>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#e05a00;"></span>Weighted calisthenics</span>
+        <span><span class="legend-dot" style="background:#fff;border:0.5px solid #444;"></span>Skill calisthenics</span>
+        <span><span class="legend-dot" style="background:#555;"></span>Endurance training</span>
+      </div>
+      <div style="position:relative;width:100%;height:280px;">
+        <canvas id="massChart" role="img" aria-label="Bar chart comparing muscle gain in kg over 6 months, 1 year and 2 years for weighted calisthenics, skill calisthenics, and endurance training">Weighted calisthenics gains most muscle mass across all timeframes.</canvas>
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">Strength index progress over 24 months</div>
+      <div class="chart-sub">Relative strength score (compound movements benchmark)</div>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#e05a00;"></span>Weighted calisthenics</span>
+        <span><span class="legend-dot" style="background:#fff;border:0.5px solid #444;"></span>Skill calisthenics</span>
+        <span><span class="legend-dot" style="background:#555;"></span>Endurance training</span>
+      </div>
+      <div style="position:relative;width:100%;height:260px;">
+        <canvas id="strengthChart" role="img" aria-label="Line chart showing strength index over 24 months for three training styles">Weighted calisthenics and skill calisthenics both show high strength development, with endurance training significantly lower.</canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="section">
+    <div class="section-title">Training style comparison</div>
+    <div style="background:#1a1a1a;border:0.5px solid #333;border-radius:12px;overflow:hidden;margin-bottom:28px;">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Weighted calisthenics</th>
+            <th>Skill calisthenics</th>
+            <th>Endurance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Muscle mass gain</td><td class="hi">High</td><td>Moderate</td><td>Low</td></tr>
+          <tr><td>Strength</td><td class="hi">Very high</td><td>High</td><td>Low–Moderate</td></tr>
+          <tr><td>Body-weight skills</td><td>Moderate</td><td class="hi">Very high</td><td>Low</td></tr>
+          <tr><td>Cardiovascular fitness</td><td>Moderate</td><td>Moderate</td><td class="hi">Very high</td></tr>
+          <tr><td>Fat loss</td><td>High</td><td>Moderate</td><td class="hi">High</td></tr>
+          <tr><td>Joint stress</td><td>Moderate</td><td>Moderate</td><td>Low</td></tr>
+          <tr><td>Equipment needed</td><td>Weight vest / belt</td><td>Pull-up bar</td><td>None or shoes</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="section">
+    <div class="section-title">Key principles</div>
+    <div class="tips">
+      <div class="tip">
+        <div class="t-head">Progressive overload</div>
+        <div class="t-body">Add weight in small increments — 1–2.5 kg — to keep muscles adapting without joint strain.</div>
+      </div>
+      <div class="tip">
+        <div class="t-head">Protein intake</div>
+        <div class="t-body">Aim for 1.6–2.2 g of protein per kg of bodyweight daily to maximize muscle protein synthesis.</div>
+      </div>
+      <div class="tip">
+        <div class="t-head">Rep range</div>
+        <div class="t-body">5–10 reps at challenging load for hypertrophy. Keep form strict — weight amplifies bad mechanics.</div>
+      </div>
+      <div class="tip">
+        <div class="t-head">Recovery</div>
+        <div class="t-body">48–72 hours between sessions per muscle group. Sleep 7–9 hrs — growth happens at rest.</div>
+      </div>
+      <div class="tip">
+        <div class="t-head">Skill balance</div>
+        <div class="t-body">Mix weighted sessions with bodyweight skill work (planche, front lever) to stay functional.</div>
+      </div>
+      <div class="tip">
+        <div class="t-head">Deload weeks</div>
+        <div class="t-body">Every 4–6 weeks, reduce load by 40% for one week. Prevents overtraining and boosts long-term gains.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+  const orange = '#e05a00';
+  const white = '#ffffff';
+  const gray = '#555555';
+  const gridColor = '#2a2a2a';
+  const textColor = '#999';
+
+  const sharedOpts = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: textColor, font: { size: 12 } }, grid: { color: gridColor } },
+      y: { ticks: { color: textColor, font: { size: 12 } }, grid: { color: gridColor }, beginAtZero: true }
+    }
+  };
+
+  new Chart(document.getElementById('massChart'), {
+    type: 'bar',
+    data: {
+      labels: ['6 months', '1 year', '2 years'],
+      datasets: [
+        {
+          label: 'Weighted calisthenics',
+          data: [2.5, 5, 9],
+          backgroundColor: orange,
+          borderRadius: 4
+        },
+        {
+          label: 'Skill calisthenics',
+          data: [1.2, 2.5, 4.5],
+          backgroundColor: white,
+          borderRadius: 4
+        },
+        {
+          label: 'Endurance',
+          data: [0.4, 0.8, 1.5],
+          backgroundColor: gray,
+          borderRadius: 4
+        }
+      ]
+    },
+    options: {
+      ...sharedOpts,
+      scales: {
+        ...sharedOpts.scales,
+        y: {
+          ...sharedOpts.scales.y,
+          title: { display: true, text: 'Lean muscle gained (kg)', color: textColor, font: { size: 12 } }
+        }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('strengthChart'), {
+    type: 'line',
+    data: {
+      labels: ['0', '3m', '6m', '9m', '12m', '15m', '18m', '21m', '24m'],
+      datasets: [
+        {
+          label: 'Weighted calisthenics',
+          data: [50, 58, 68, 76, 84, 89, 93, 96, 99],
+          borderColor: orange,
+          backgroundColor: 'rgba(224,90,0,0.12)',
+          tension: 0.4,
+          borderWidth: 2.5,
+          pointRadius: 3,
+          fill: true,
+          borderDash: []
+        },
+        {
+          label: 'Skill calisthenics',
+          data: [50, 56, 64, 70, 76, 80, 84, 87, 89],
+          borderColor: white,
+          backgroundColor: 'rgba(255,255,255,0.06)',
+          tension: 0.4,
+          borderWidth: 2,
+          pointRadius: 3,
+          fill: true,
+          borderDash: [6, 3]
+        },
+        {
+          label: 'Endurance',
+          data: [50, 51, 53, 54, 55, 56, 57, 58, 59],
+          borderColor: gray,
+          backgroundColor: 'rgba(85,85,85,0.08)',
+          tension: 0.4,
+          borderWidth: 2,
+          pointRadius: 3,
+          fill: true,
+          borderDash: [2, 4]
+        }
+      ]
+    },
+    options: {
+      ...sharedOpts,
+      scales: {
+        ...sharedOpts.scales,
+        y: {
+          ...sharedOpts.scales.y,
+          title: { display: true, text: 'Strength index (arbitrary units)', color: textColor, font: { size: 12 } },
+          min: 40
+        }
+      }
+    }
+  });
+</script>

@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CALIS — Static Skills</title>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,900;1,300&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+</head>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #080808;
+      --chalk:   #f0ece3;
+      --iron:    #141414;
+      --bar:     #1e1e1e;
+      --rust:    #c8412a;
+      --rust2:   #e05a3a;
+      --gold:    #d4a843;
+      --muted:   rgba(240,236,227,0.45);
+
+      /* difficulty colours */
+      --c-starter:    #4caf82;
+      --c-beginner:   #7bc67e;
+      --c-intermediate: #e0b44a;
+      --c-advanced:   #e07a3a;
+      --c-elite:      #c8412a;
+      --c-legendary:  #9b42c8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--chalk);
+      font-family: 'Barlow', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* noise grain */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.3rem 3rem;
+      z-index: 200;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent);
+    }
+    .nav-logo {
+      font-family: 'Black Ops One', cursive;
+      font-size: 1.4rem;
+      letter-spacing: 0.15em;
+      color: var(--chalk);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--rust); }
+    .nav-back {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 0.6rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--chalk); }
+    .nav-back::before { content: '←'; }
+
+    /* ── HERO HEADER ── */
+    .page-hero {
+      padding: 10rem 5rem 5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: 'SKILLS';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -40%);
+      font-family: 'Black Ops One', cursive;
+      font-size: 20vw;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(240,236,227,0.03);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+    .hero-tag {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 1.2rem;
+      opacity: 0; animation: fadeUp 0.6s 0.1s ease forwards;
+    }
+    .hero-title {
+      font-family: 'Black Ops One', cursive;
+      font-size: clamp(2.8rem, 5vw, 5rem);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      opacity: 0; animation: fadeUp 0.6s 0.25s ease forwards;
+    }
+    .hero-title em {
+      font-style: normal;
+      color: transparent;
+      -webkit-text-stroke: 2px var(--chalk);
+    }
+    .hero-sub {
+      max-width: 52ch;
+      margin: 0 auto;
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--muted);
+      font-weight: 300;
+      opacity: 0; animation: fadeUp 0.6s 0.4s ease forwards;
+    }
+
+    /* ── LEGEND ── */
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      padding: 2.5rem 5rem;
+      border-bottom: 1px solid rgba(240,236,227,0.06);
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .legend-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── LADDER SECTION ── */
+    .ladder-section {
+      padding: 6rem 0 8rem;
+      position: relative;
+    }
+
+    /* Central arrow/spine */
+    .spine {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(200,65,42,0.4) 8%,
+        rgba(200,65,42,0.6) 50%,
+        rgba(155,66,200,0.6) 90%,
+        transparent 100%
+      );
+      z-index: 1;
+    }
+
+    /* Arrow head at bottom */
+    .spine-arrow {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      z-index: 2;
+    }
+    .spine-arrow-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(155,66,200,0.7);
+      writing-mode: horizontal-tb;
+    }
+    .arrow-chevrons {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 3px;
+    }
+    .chevron {
+      width: 14px; height: 7px;
+      border-left: 2px solid;
+      border-bottom: 2px solid;
+      transform: rotate(-45deg);
+      animation: bounce 1.5s ease infinite;
+    }
+    .chevron:nth-child(1) { border-color: rgba(200,65,42,0.5); animation-delay: 0s; }
+    .chevron:nth-child(2) { border-color: rgba(200,65,42,0.65); animation-delay: 0.15s; }
+    .chevron:nth-child(3) { border-color: rgba(155,66,200,0.8); animation-delay: 0.3s; }
+
+    /* Top label */
+    .spine-top-label {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 1rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(76,175,130,0.7);
+      z-index: 2;
+      white-space: nowrap;
+    }
+
+    /* Skill rows */
+    .skill-row {
+      display: grid;
+      grid-template-columns: 1fr 80px 1fr;
+      align-items: center;
+      padding: 2rem 4rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Connector dots on spine */
+    .skill-row .spine-node {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .node-dot {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      border: 2px solid;
+      background: var(--black);
+      position: relative;
+      z-index: 3;
+      transition: transform 0.3s;
+    }
+    .skill-row:hover .node-dot { transform: scale(1.4); }
+
+    /* Connector line from card to node */
+    .card-left { justify-self: end; padding-right: 1.5rem; }
+    .card-right { justify-self: start; padding-left: 1.5rem; }
+    .card-left { text-align: right; }
+
+    /* ── SKILL CARD ── */
+    .skill-card {
+      background: var(--iron);
+      border: 1px solid rgba(240,236,227,0.06);
+      padding: 2rem 2.2rem;
+      max-width: 420px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.35s, transform 0.35s, box-shadow 0.35s;
+      cursor: default;
+    }
+    .skill-card:hover {
+      transform: translateY(-4px);
+    }
+    .card-left .skill-card { border-right: 3px solid transparent; }
+    .card-right .skill-card { border-left: 3px solid transparent; }
+    .card-left .skill-card:hover { border-right-color: var(--accent); }
+    .card-right .skill-card:hover { border-left-color: var(--accent); }
+
+    /* glow on hover */
+    .skill-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at var(--mx,50%) var(--my,50%), var(--accent-glow,transparent) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+    .skill-card:hover::before { opacity: 1; }
+
+    /* rank badge */
+    .card-rank {
+      position: absolute;
+      top: 1rem;
+      font-family: 'Black Ops One', cursive;
+      font-size: 4rem;
+      line-height: 1;
+      color: rgba(240,236,227,0.04);
+      user-select: none;
+    }
+    .card-left .skill-card .card-rank { right: 1rem; }
+    .card-right .skill-card .card-rank { left: 1rem; }
+
+    .diff-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.7rem;
+      border-radius: 2px;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .diff-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+    }
+
+    .skill-name {
+      font-family: 'Black Ops One', cursive;
+      font-size: 1.55rem;
+      margin-bottom: 0.5rem;
+      line-height: 1;
+    }
+    .skill-aka {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+    .skill-desc {
+      font-size: 0.85rem;
+      line-height: 1.75;
+      color: rgba(240,236,227,0.55);
+      font-weight: 300;
+      margin-bottom: 1.4rem;
+    }
+
+    /* meta row */
+    .skill-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      border-top: 1px solid rgba(240,236,227,0.06);
+      padding-top: 1.2rem;
+    }
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .meta-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(240,236,227,0.25);
+    }
+    .meta-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--chalk);
+    }
+
+    /* SVG illustration */
+    .skill-svg {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.2rem;
+    }
+    .skill-svg svg {
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+    .skill-card:hover .skill-svg svg { opacity: 1; }
+
+    /* Progress bar */
+    .difficulty-bar {
+      margin-top: 1rem;
+      height: 3px;
+      background: rgba(240,236,227,0.08);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .difficulty-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: var(--accent);
+    }
+
+    /* connector lines to spine */
+    .connector {
+      position: absolute;
+      top: 50%;
+      height: 1px;
+      background: linear-gradient(to right, var(--accent), transparent);
+      pointer-events: none;
+    }
+    .card-left .connector {
+      right: -1.5rem;
+      width: 1.5rem;
+      background: linear-gradient(to left, var(--accent), transparent);
+    }
+    .card-right .connector {
+      left: -1.5rem;
+      width: 1.5rem;
+    }
+
+    /* ── BOTTOM CTA ── */
+    .bottom-cta {
+      text-align: center;
+      padding: 6rem 5rem 8rem;
+      background: var(--iron);
+      border-top: 1px solid rgba(240,236,227,0.06);
+    }
+    .bottom-cta h2 {
+      font-family: 'Black Ops One', cursive;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      margin-bottom: 1rem;
+    }
+    .bottom-cta p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 300;
+      max-width: 44ch;
+      margin: 0 auto 2.5rem;
+      line-height: 1.75;
+    }
+    .btn-primary {
+      background: var(--rust);
+      color: var(--chalk);
+      border: none;
+      padding: 1rem 2.5rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 100%, 10px 100%);
+      display: inline-block;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(200,65,42,0.35);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: rotate(-45deg) translateY(0); opacity: 0.5; }
+      50% { transform: rotate(-45deg) translateY(4px); opacity: 1; }
+    }
+
+    /* scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-32px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(32px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .skill-row {
+        grid-template-columns: 1fr;
+        padding: 1.5rem 1.5rem;
+        justify-items: center;
+      }
+      .spine { display: none; }
+      .spine-arrow, .spine-top-label { display: none; }
+      .card-left, .card-right { justify-self: center; padding: 0; text-align: left; }
+      .skill-card { max-width: 100%; width: 100%; }
+      .card-left .skill-card { border-right: 1px solid rgba(240,236,227,0.06); border-left: 3px solid var(--accent); }
+      .card-right .skill-card { border-left: 3px solid var(--accent); }
+      .spine-node { display: none; }
+      .connector { display: none; }
+      nav { padding: 1rem 1.5rem; }
+      .page-hero { padding: 8rem 1.5rem 3rem; }
+      .legend { padding: 1.5rem; gap: 1rem; }
+      .bottom-cta { padding: 4rem 2rem; }
+    }
+</style>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="calisthenics-home.html">CALIS<span>.</span></a>
+  <a class="nav-back" href="calisthenics-home.html">Back to Home</a>
+</nav>
+
+<!-- HERO -->
+<header class="page-hero">
+  <p class="hero-tag">Static Skills Progression</p>
+  <h1 class="hero-title">The <em>Ladder</em><br>of Mastering <br> calisthenics skills</h1>
+  <p class="hero-sub">Six static holds ranked from first grip to legend status. Each skill demands total body tension, patience, and progressive conditioning. How far will you climb?</p>
+</header>
+
+<!-- LEGEND -->
+<div class="legend reveal">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--c-starter)"></div> Starter</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--c-beginner)"></div> Beginner</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--c-intermediate)"></div> Intermediate</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--c-advanced)"></div> Advanced</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--c-elite)"></div> Elite</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--c-legendary)"></div> Legendary</div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     LADDER
+════════════════════════════════════════ -->
+<div class="ladder-section">
+
+  <!-- Spine (vertical arrow) -->
+  <div class="spine"></div>
+  <div class="spine-top-label">↑ Easiest</div>
+  <div class="spine-arrow">
+    <div class="spine-arrow-label">Hardest ↓</div>
+    <div class="arrow-chevrons">
+      <div class="chevron"></div>
+      <div class="chevron"></div>
+      <div class="chevron"></div>
+    </div>
+  </div>
+
+  <!-- ══ SKILL 1 — L-SIT (LEFT) ══ -->
+  <div class="skill-row">
+    <div class="card-left reveal-left">
+      <div class="skill-card" style="--accent:var(--c-starter); --accent-glow:rgba(76,175,130,0.08);">
+        <div class="card-rank">01</div>
+        <div class="connector"></div>
+
+        <div class="diff-badge" style="background:rgba(76,175,130,0.12); color:var(--c-starter);">
+          <div class="legend-dot diff-dot" style="background:var(--c-starter)"></div>
+          Starter
+        </div>
+
+        <div class="skill-svg">
+          <!-- L-sit SVG: person sitting with legs parallel to ground, arms pressing down -->
+          <svg width="110" height="90" viewBox="0 0 110 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Body torso vertical -->
+            <line x1="55" y1="28" x2="55" y2="58" stroke="#4caf82" stroke-width="5" stroke-linecap="round"/>
+            <!-- Head -->
+            <circle cx="55" cy="20" r="8" fill="#4caf82" opacity="0.8"/>
+            <!-- Arms down (pushing on floor) -->
+            <line x1="55" y1="38" x2="25" y2="58" stroke="#4caf82" stroke-width="4" stroke-linecap="round"/>
+            <line x1="55" y1="38" x2="85" y2="58" stroke="#4caf82" stroke-width="4" stroke-linecap="round"/>
+            <!-- Hands (circles on ground line) -->
+            <circle cx="25" cy="60" r="4" fill="#4caf82" opacity="0.7"/>
+            <circle cx="85" cy="60" r="4" fill="#4caf82" opacity="0.7"/>
+            <!-- Ground line -->
+            <line x1="10" y1="64" x2="100" y2="64" stroke="rgba(240,236,227,0.12)" stroke-width="2"/>
+            <!-- Legs parallel to ground -->
+            <line x1="55" y1="56" x2="95" y2="56" stroke="#4caf82" stroke-width="5" stroke-linecap="round"/>
+            <!-- Feet -->
+            <circle cx="96" cy="56" r="4" fill="#4caf82" opacity="0.7"/>
+          </svg>
+        </div>
+
+        <div class="skill-name">L-Sit</div>
+        <div class="skill-aka">Aka: The Foundation Hold</div>
+        <p class="skill-desc">
+          Both hands press into a surface, arms locked straight, hips raised and legs held parallel to the ground — forming a perfect "L". The gateway static skill that builds core compression, tricep strength, and hip flexor endurance.
+        </p>
+
+        <div class="difficulty-bar"><div class="difficulty-fill" style="width:16%; background:var(--c-starter);"></div></div>
+
+        <div class="skill-meta">
+          <div class="meta-item">
+            <span class="meta-label">Time to Learn</span>
+            <span class="meta-value">1 – 3 months</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Difficulty</span>
+            <span class="meta-value">1 / 6</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Target Hold</span>
+            <span class="meta-value">10 – 30 sec</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Key Muscles</span>
+            <span class="meta-value">Hip Flexors · Triceps · Core</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spine-node reveal">
+      <div class="node-dot" style="border-color:var(--c-starter); box-shadow:0 0 10px rgba(76,175,130,0.4);"></div>
+    </div>
+    <div class="card-right"></div>
+  </div>
+
+  <!-- ══ SKILL 2 — ELBOW LEVER (RIGHT) ══ -->
+  <div class="skill-row">
+    <div class="card-left"></div>
+    <div class="spine-node reveal">
+      <div class="node-dot" style="border-color:var(--c-beginner); box-shadow:0 0 10px rgba(123,198,126,0.4);"></div>
+    </div>
+    <div class="card-right reveal-right">
+      <div class="skill-card" style="--accent:var(--c-beginner); --accent-glow:rgba(123,198,126,0.07);">
+        <div class="card-rank">02</div>
+        <div class="connector"></div>
+
+        <div class="diff-badge" style="background:rgba(123,198,126,0.12); color:var(--c-beginner);">
+          <div class="legend-dot diff-dot" style="background:var(--c-beginner)"></div>
+          Beginner
+        </div>
+
+        <div class="skill-svg">
+          <!-- Elbow lever: person horizontal, arms bent, elbows in hips, body parallel -->
+          <svg width="140" height="75" viewBox="0 0 140 75" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Ground -->
+            <line x1="5" y1="58" x2="135" y2="58" stroke="rgba(240,236,227,0.1)" stroke-width="2"/>
+            <!-- Forearm left vertical -->
+            <line x1="28" y1="38" x2="28" y2="58" stroke="#7bc67e" stroke-width="5" stroke-linecap="round"/>
+            <!-- Forearm right vertical -->
+            <line x1="62" y1="38" x2="62" y2="58" stroke="#7bc67e" stroke-width="5" stroke-linecap="round"/>
+            <!-- Hands -->
+            <circle cx="28" cy="59" r="4" fill="#7bc67e" opacity="0.7"/>
+            <circle cx="62" cy="59" r="4" fill="#7bc67e" opacity="0.7"/>
+            <!-- Body horizontal -->
+            <line x1="25" y1="36" x2="115" y2="36" stroke="#7bc67e" stroke-width="6" stroke-linecap="round"/>
+            <!-- Head -->
+            <circle cx="120" cy="36" r="9" fill="#7bc67e" opacity="0.8"/>
+            <!-- Legs together horizontal -->
+            <line x1="10" y1="36" x2="25" y2="36" stroke="#7bc67e" stroke-width="5" stroke-linecap="round"/>
+            <!-- Feet -->
+            <circle cx="9" cy="36" r="4" fill="#7bc67e" opacity="0.6"/>
+          </svg>
+        </div>
+
+        <div class="skill-name">Elbow Lever</div>
+        <div class="skill-aka">Aka: The Crow's Gateway</div>
+        <p class="skill-desc">
+          The entire body balances horizontally on bent elbows pressing into the hip bones, arms acting as a shelf. Surprisingly accessible once you find the sweet spot — it's mostly a balance trick, but requires real core rigidity and wrist strength.
+        </p>
+
+        <div class="difficulty-bar"><div class="difficulty-fill" style="width:30%; background:var(--c-beginner);"></div></div>
+
+        <div class="skill-meta">
+          <div class="meta-item">
+            <span class="meta-label">Time to Learn</span>
+            <span class="meta-value">1 – 4 months</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Difficulty</span>
+            <span class="meta-value">2 / 6</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Target Hold</span>
+            <span class="meta-value">5 – 15 sec</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Key Muscles</span>
+            <span class="meta-value">Core · Shoulders · Wrists</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SKILL 3 — HANDSTAND (LEFT) ══ -->
+  <div class="skill-row">
+    <div class="card-left reveal-left">
+      <div class="skill-card" style="--accent:var(--c-intermediate); --accent-glow:rgba(224,180,74,0.07);">
+        <div class="card-rank">03</div>
+        <div class="connector"></div>
+
+        <div class="diff-badge" style="background:rgba(224,180,74,0.12); color:var(--c-intermediate);">
+          <div class="legend-dot diff-dot" style="background:var(--c-intermediate)"></div>
+          Intermediate
+        </div>
+
+        <div class="skill-svg">
+          <!-- Handstand: inverted straight body, hands on floor -->
+          <svg width="60" height="120" viewBox="0 0 60 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Ground line -->
+            <line x1="5" y1="108" x2="55" y2="108" stroke="rgba(240,236,227,0.1)" stroke-width="2"/>
+            <!-- Hands -->
+            <circle cx="20" cy="106" r="4" fill="#e0b44a" opacity="0.7"/>
+            <circle cx="40" cy="106" r="4" fill="#e0b44a" opacity="0.7"/>
+            <!-- Arms -->
+            <line x1="20" y1="102" x2="30" y2="84" stroke="#e0b44a" stroke-width="4" stroke-linecap="round"/>
+            <line x1="40" y1="102" x2="30" y2="84" stroke="#e0b44a" stroke-width="4" stroke-linecap="round"/>
+            <!-- Body -->
+            <line x1="30" y1="84" x2="30" y2="28" stroke="#e0b44a" stroke-width="6" stroke-linecap="round"/>
+            <!-- Head (top = feet direction, inverted so head at bottom conceptually — body is straight) -->
+            <!-- Legs -->
+            <line x1="30" y1="28" x2="30" y2="14" stroke="#e0b44a" stroke-width="5" stroke-linecap="round"/>
+            <!-- Feet -->
+            <circle cx="30" cy="10" r="5" fill="#e0b44a" opacity="0.8"/>
+          </svg>
+        </div>
+
+        <div class="skill-name">Handstand</div>
+        <div class="skill-aka">Aka: The Vertical Throne</div>
+        <p class="skill-desc">
+          Freestanding inverted balance on both hands — perfectly straight body, active shoulders, and constant micro-adjustments through the wrists and fingers. One of the most rewarding skills in all of movement, demanding weeks of wall work before going free.
+        </p>
+
+        <div class="difficulty-bar"><div class="difficulty-fill" style="width:48%; background:var(--c-intermediate);"></div></div>
+
+        <div class="skill-meta">
+          <div class="meta-item">
+            <span class="meta-label">Time to Learn</span>
+            <span class="meta-value">3 – 12 months</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Difficulty</span>
+            <span class="meta-value">3 / 6</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Target Hold</span>
+            <span class="meta-value">10 – 60 sec</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Key Muscles</span>
+            <span class="meta-value">Shoulders · Core · Wrists · Balance</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spine-node reveal">
+      <div class="node-dot" style="border-color:var(--c-intermediate); box-shadow:0 0 10px rgba(224,180,74,0.4);"></div>
+    </div>
+    <div class="card-right"></div>
+  </div>
+
+  <!-- ══ SKILL 4 — 90° HOLD (RIGHT) ══ -->
+  <div class="skill-row">
+    <div class="card-left"></div>
+    <div class="spine-node reveal">
+      <div class="node-dot" style="border-color:var(--c-advanced); box-shadow:0 0 10px rgba(224,122,58,0.4);"></div>
+    </div>
+    <div class="card-right reveal-right">
+      <div class="skill-card" style="--accent:var(--c-advanced); --accent-glow:rgba(224,122,58,0.07);">
+        <div class="card-rank">04</div>
+        <div class="connector"></div>
+
+        <div class="diff-badge" style="background:rgba(224,122,58,0.12); color:var(--c-advanced);">
+          <div class="legend-dot diff-dot" style="background:var(--c-advanced)"></div>
+          Advanced
+        </div>
+
+        <div class="skill-svg">
+          <!-- 90 degree hold: V-sit / L-sit on bars with 90° between torso and legs -->
+          <svg width="120" height="100" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Two bars (parallel bars) -->
+            <line x1="10" y1="55" x2="10" y2="90" stroke="rgba(240,236,227,0.15)" stroke-width="4" stroke-linecap="round"/>
+            <line x1="110" y1="55" x2="110" y2="90" stroke="rgba(240,236,227,0.15)" stroke-width="4" stroke-linecap="round"/>
+            <line x1="5" y1="55" x2="20" y2="55" stroke="rgba(240,236,227,0.15)" stroke-width="3"/>
+            <line x1="105" y1="55" x2="120" y2="55" stroke="rgba(240,236,227,0.15)" stroke-width="3"/>
+            <!-- Arms locked straight, hands gripping bars -->
+            <circle cx="20" cy="55" r="4" fill="#e07a3a" opacity="0.7"/>
+            <circle cx="100" cy="55" r="4" fill="#e07a3a" opacity="0.7"/>
+            <line x1="20" y1="51" x2="48" y2="28" stroke="#e07a3a" stroke-width="4" stroke-linecap="round"/>
+            <line x1="100" y1="51" x2="72" y2="28" stroke="#e07a3a" stroke-width="4" stroke-linecap="round"/>
+            <!-- Torso upright -->
+            <line x1="60" y1="28" x2="60" y2="8" stroke="#e07a3a" stroke-width="5" stroke-linecap="round"/>
+            <!-- Head -->
+            <circle cx="60" cy="5" r="5" fill="#e07a3a" opacity="0.9"/>
+            <!-- Legs horizontal, 90° to body -->
+            <line x1="60" y1="28" x2="92" y2="28" stroke="#e07a3a" stroke-width="5" stroke-linecap="round"/>
+            <!-- Feet -->
+            <circle cx="94" cy="28" r="4" fill="#e07a3a" opacity="0.7"/>
+            <!-- 90° angle indicator -->
+            <path d="M60 18 L60 28 L70 28" stroke="rgba(224,122,58,0.4)" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+
+        <div class="skill-name">90° Hold</div>
+        <div class="skill-aka">Aka: The V-Sit / Parallel Bar Lever</div>
+        <p class="skill-desc">
+          On parallel bars, arms locked straight, body upright — legs extended horizontally at exactly 90° to the torso. The extreme compression demand on hip flexors and lower abs, combined with tricep lockout strength, makes this a true advanced benchmark.
+        </p>
+
+        <div class="difficulty-bar"><div class="difficulty-fill" style="width:65%; background:var(--c-advanced);"></div></div>
+
+        <div class="skill-meta">
+          <div class="meta-item">
+            <span class="meta-label">Time to Learn</span>
+            <span class="meta-value">6 – 18 months</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Difficulty</span>
+            <span class="meta-value">4 / 6</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Target Hold</span>
+            <span class="meta-value">3 – 10 sec</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Key Muscles</span>
+            <span class="meta-value">Hip Flexors · Triceps · Lower Abs · Lats</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SKILL 5 — PLANCHE (LEFT) ══ -->
+  <div class="skill-row">
+    <div class="card-left reveal-left">
+      <div class="skill-card" style="--accent:var(--c-elite); --accent-glow:rgba(200,65,42,0.08);">
+        <div class="card-rank">05</div>
+        <div class="connector"></div>
+
+        <div class="diff-badge" style="background:rgba(200,65,42,0.12); color:var(--c-elite);">
+          <div class="legend-dot diff-dot" style="background:var(--c-elite)"></div>
+          Elite
+        </div>
+
+        <div class="skill-svg">
+          <!-- Planche: horizontal body, arms straight, body parallel to floor, toes pointed -->
+          <svg width="150" height="70" viewBox="0 0 150 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Ground line -->
+            <line x1="5" y1="52" x2="145" y2="52" stroke="rgba(240,236,227,0.08)" stroke-width="2"/>
+            <!-- Hands on floor -->
+            <circle cx="38" cy="50" r="5" fill="#c8412a" opacity="0.8"/>
+            <circle cx="62" cy="50" r="5" fill="#c8412a" opacity="0.8"/>
+            <!-- Arms straight, angled -->
+            <line x1="38" y1="45" x2="62" y2="30" stroke="#c8412a" stroke-width="4.5" stroke-linecap="round"/>
+            <line x1="62" y1="45" x2="80" y2="30" stroke="#c8412a" stroke-width="4.5" stroke-linecap="round"/>
+            <!-- Horizontal body -->
+            <line x1="62" y1="30" x2="120" y2="30" stroke="#c8412a" stroke-width="6.5" stroke-linecap="round"/>
+            <!-- Legs + pointed feet -->
+            <line x1="120" y1="30" x2="140" y2="30" stroke="#c8412a" stroke-width="5" stroke-linecap="round"/>
+            <line x1="140" y1="28" x2="147" y2="30" stroke="#c8412a" stroke-width="3" stroke-linecap="round"/>
+            <line x1="140" y1="32" x2="147" y2="30" stroke="#c8412a" stroke-width="3" stroke-linecap="round"/>
+            <!-- Head -->
+            <circle cx="58" cy="22" r="8" fill="#c8412a" opacity="0.8"/>
+          </svg>
+        </div>
+
+        <div class="skill-name">Planche</div>
+        <div class="skill-aka">Aka: The Gravity Defier</div>
+        <p class="skill-desc">
+          The full body held horizontal above the ground, arms straight, with no legs touching any surface. Pure protraction strength, anterior deltoid dominance, and total body tension. Years of progressive training through tuck → advanced tuck → straddle → full planche.
+        </p>
+
+        <div class="difficulty-bar"><div class="difficulty-fill" style="width:82%; background:var(--c-elite);"></div></div>
+
+        <div class="skill-meta">
+          <div class="meta-item">
+            <span class="meta-label">Time to Learn</span>
+            <span class="meta-value">1 – 4 years</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Difficulty</span>
+            <span class="meta-value">5 / 6</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Target Hold</span>
+            <span class="meta-value">1 – 5 sec (full)</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Key Muscles</span>
+            <span class="meta-value">Anterior Delts · Chest · Core · Triceps</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spine-node reveal">
+      <div class="node-dot" style="border-color:var(--c-elite); box-shadow:0 0 12px rgba(200,65,42,0.5);"></div>
+    </div>
+    <div class="card-right"></div>
+  </div>
+
+  <!-- ══ SKILL 6 — DRAGON FLAG (RIGHT) ══ -->
+  <div class="skill-row">
+    <div class="card-left"></div>
+    <div class="spine-node reveal">
+      <div class="node-dot" style="border-color:var(--c-legendary); box-shadow:0 0 14px rgba(155,66,200,0.6);"></div>
+    </div>
+    <div class="card-right reveal-right">
+      <div class="skill-card" style="--accent:var(--c-legendary); --accent-glow:rgba(155,66,200,0.09);">
+        <div class="card-rank">06</div>
+        <div class="connector"></div>
+
+        <div class="diff-badge" style="background:rgba(155,66,200,0.12); color:var(--c-legendary);">
+          <div class="legend-dot diff-dot" style="background:var(--c-legendary)"></div>
+          Legendary
+        </div>
+
+        <div class="skill-svg">
+          <!-- Dragon planche: harder planche variant, body slightly arched, more protraction -->
+          <svg width="155" height="70" viewBox="0 0 155 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Ground -->
+            <line x1="5" y1="54" x2="150" y2="54" stroke="rgba(240,236,227,0.08)" stroke-width="2"/>
+            <!-- Hands with fingers spread (dragon claws symbolically) -->
+            <circle cx="35" cy="52" r="5" fill="#9b42c8" opacity="0.9"/>
+            <circle cx="58" cy="52" r="5" fill="#9b42c8" opacity="0.9"/>
+            <!-- Finger lines -->
+            <line x1="30" y1="50" x2="26" y2="54" stroke="#9b42c8" stroke-width="1.5" opacity="0.6"/>
+            <line x1="33" y1="48" x2="30" y2="54" stroke="#9b42c8" stroke-width="1.5" opacity="0.6"/>
+            <line x1="37" y1="47" x2="36" y2="54" stroke="#9b42c8" stroke-width="1.5" opacity="0.6"/>
+            <line x1="40" y1="48" x2="42" y2="54" stroke="#9b42c8" stroke-width="1.5" opacity="0.6"/>
+            <!-- Arms pitched forward more aggressively -->
+            <line x1="35" y1="47" x2="55" y2="28" stroke="#9b42c8" stroke-width="4.5" stroke-linecap="round"/>
+            <line x1="58" y1="47" x2="75" y2="28" stroke="#9b42c8" stroke-width="4.5" stroke-linecap="round"/>
+            <!-- Body horizontal but with slight dragon curve -->
+            <path d="M55 28 Q90 24 125 27" stroke="#9b42c8" stroke-width="6.5" stroke-linecap="round" fill="none"/>
+            <!-- Legs -->
+            <line x1="125" y1="27" x2="148" y2="25" stroke="#9b42c8" stroke-width="5" stroke-linecap="round"/>
+            <!-- Pointed feet -->
+            <line x1="148" y1="23" x2="153" y2="25" stroke="#9b42c8" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="148" y1="27" x2="153" y2="25" stroke="#9b42c8" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Head with glow -->
+            <circle cx="52" cy="20" r="8" fill="#9b42c8" opacity="0.9"/>
+            <circle cx="52" cy="20" r="12" fill="none" stroke="#9b42c8" stroke-width="1" opacity="0.2"/>
+          </svg>
+        </div>
+
+        <div class="skill-name">Dragon Planche</div>
+        <div class="skill-aka">Aka: The Apex. The End Game.</div>
+        <p class="skill-desc">
+          The planche's most brutal evolution — hands positioned further forward past the hips, demanding exponentially greater anterior deltoid and wrist extensor strength. The lever arm becomes catastrophically long. Fewer than 0.1% of athletes ever achieve this. A lifetime pursuit.
+        </p>
+
+        <div class="difficulty-bar">
+          <div class="difficulty-fill" style="width:100%; background: linear-gradient(to right, var(--c-elite), var(--c-legendary));"></div>
+        </div>
+
+        <div class="skill-meta">
+          <div class="meta-item">
+            <span class="meta-label">Time to Learn</span>
+            <span class="meta-value">4 – 10+ years</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Difficulty</span>
+            <span class="meta-value">6 / 6</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Target Hold</span>
+            <span class="meta-value">1 – 3 sec</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Key Muscles</span>
+            <span class="meta-value">Entire Upper Body · Tendons · Will</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end ladder-section -->
+
+<!-- BOTTOM CTA -->
+<div class="bottom-cta">
+  <h2>Ready to Start<br>Your Climb?</h2>
+  <p>Every legend began with an L-sit. Pick your entry point, be consistent, and trust the process. The ladder waits.</p>
+  <a class="btn-primary" href="calisthenics-home.html">Explore Programs →</a>
+</div>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Card glow follow-mouse
+  document.querySelectorAll('.skill-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
+      const y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
+      card.style.setProperty('--mx', x + '%');
+      card.style.setProperty('--my', y + '%');
+    });
+  });
+</script>
+</body>
+</html>
